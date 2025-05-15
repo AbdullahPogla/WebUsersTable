@@ -2,7 +2,7 @@ let users = [];
         let userIdToDelete = null;
         let userIdToEdit = null;
 
-        // Fetch users from JSONPlaceholder API
+        
         async function fetchUsers() {
             try {
                 const response = await fetch('https://jsonplaceholder.typicode.com/users');
@@ -10,12 +10,12 @@ let users = [];
                     throw new Error('Failed to fetch data from API');
                 }
                 const apiUsers = await response.json();
-                // Duplicate users to get 40 rows
+             
                 for (let i = 0; i < 4; i++) {
                     apiUsers.forEach(user => {
                         users.push({
                             ...user,
-                            id: user.id + (i * 10) // Ensure unique IDs
+                            id: user.id + (i * 10) 
                         });
                     });
                 }
@@ -25,7 +25,7 @@ let users = [];
             }
         }
 
-        // Populate table with user data
+       
         function populateTable() {
             const tableBody = document.getElementById('userTableBody');
             tableBody.innerHTML = ''; // Clear existing rows
@@ -47,17 +47,16 @@ let users = [];
             });
         }
 
-        // Open the insert modal
+      
         function openInsertModal() {
             console.log('Opening insert modal');
             document.getElementById('insertModal').style.display = 'flex';
         }
 
-        // Close the insert modal
+      
         function closeModal() {
             console.log('Closing insert modal');
             document.getElementById('insertModal').style.display = 'none';
-            // Clear form inputs
             document.getElementById('newId').value = '';
             document.getElementById('newName').value = '';
             document.getElementById('newUsername').value = '';
@@ -65,7 +64,7 @@ let users = [];
             document.getElementById('newAddress').value = '';
         }
 
-        // Submit new user data
+ 
         function submitNewUser() {
             const newUser = {
                 id: parseInt(document.getElementById('newId').value),
@@ -79,13 +78,13 @@ let users = [];
                 }
             };
 
-            // Validate inputs
+          
             if (!newUser.id || !newUser.name || !newUser.username || !newUser.email || !newUser.address.street) {
                 alert('Please fill in all fields');
                 return;
             }
 
-            // Check for duplicate ID
+            
             if (users.some(user => user.id === newUser.id)) {
                 alert('ID already exists. Please use a unique ID.');
                 return;
@@ -96,7 +95,7 @@ let users = [];
             closeModal();
         }
 
-        // Open the edit modal
+      
         function openEditModal(userId) {
             console.log(`Opening edit modal for user ID: ${userId}`);
             userIdToEdit = userId;
@@ -111,14 +110,14 @@ let users = [];
             }
         }
 
-        // Close the edit modal
+     
         function closeEditModal() {
             console.log('Closing edit modal');
             document.getElementById('editModal').style.display = 'none';
             userIdToEdit = null;
         }
 
-        // Submit edited user data
+      
         function submitEditUser() {
             const updatedUser = {
                 id: parseInt(document.getElementById('editId').value),
@@ -132,40 +131,40 @@ let users = [];
                 }
             };
 
-            // Validate inputs
+       
             if (!updatedUser.id || !updatedUser.name || !updatedUser.username || !updatedUser.email || !updatedUser.address.street) {
                 alert('Please fill in all fields');
                 return;
             }
 
-            // Check for duplicate ID (excluding the current user)
+         
             if (users.some(user => user.id === updatedUser.id && user.id !== userIdToEdit)) {
                 alert('ID already exists. Please use a unique ID.');
                 return;
             }
 
-            // Update the user in the users array
+          
             users = users.map(user => user.id === userIdToEdit ? updatedUser : user);
             console.log(`User with ID ${userIdToEdit} updated`);
             populateTable();
             closeEditModal();
         }
 
-        // Open the delete confirmation modal
+      
         function openDeleteModal(userId) {
             console.log(`Opening delete modal for user ID: ${userId}`);
             userIdToDelete = userId;
             document.getElementById('deleteModal').style.display = 'flex';
         }
 
-        // Close the delete confirmation modal
+       
         function closeDeleteModal() {
             console.log('Closing delete modal');
             document.getElementById('deleteModal').style.display = 'none';
             userIdToDelete = null;
         }
 
-        // Confirm deletion
+        
         function confirmDelete() {
             console.log(`Confirming deletion for user ID: ${userIdToDelete}`);
             if (userIdToDelete !== null) {
@@ -180,5 +179,5 @@ let users = [];
             }
         }
 
-        // Fetch data when the page loads
+        
         document.addEventListener('DOMContentLoaded', fetchUsers);
